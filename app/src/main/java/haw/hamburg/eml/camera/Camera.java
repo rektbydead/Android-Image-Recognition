@@ -1,6 +1,9 @@
 package haw.hamburg.eml.camera;
 
 
+import android.content.res.Configuration;
+import android.util.Log;
+
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.JavaCameraView;
 import org.opencv.core.Core;
@@ -8,6 +11,7 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
+import haw.hamburg.eml.MainActivity;
 import haw.hamburg.eml.utils.EventsInitializer;
 import haw.hamburg.eml.yolo.Detector;
 
@@ -15,7 +19,7 @@ public class Camera implements CameraBridgeViewBase.CvCameraViewListener2 {
 
     private final int CAMERA_ID;
 
-    private Mat mRGBA, newFrame;
+    private Mat mRGBA;
     protected JavaCameraView javaCameraView;
 
     public Camera(JavaCameraView javaCameraView, int cameraID) {
@@ -49,6 +53,8 @@ public class Camera implements CameraBridgeViewBase.CvCameraViewListener2 {
         Imgproc.cvtColor(inputFrame.rgba(), mRGBA, Imgproc.COLOR_RGBA2RGB);
         Core.transpose(mRGBA, mRGBA);
         Core.flip(mRGBA, mRGBA, 1);
+
+        //Log.d("MainActivity", "Width: " + mRGBA.width() + " Height: " + mRGBA.height());
 
         if (!EventsInitializer.getInstance().getDetect())
             return mRGBA;

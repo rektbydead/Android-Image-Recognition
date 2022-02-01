@@ -18,6 +18,8 @@ import haw.hamburg.eml.yolo.DetectorInitializer;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static MainActivity instance;
+
     private static final String TAG = "MainActivity";
     private static final int MY_CAMERA_REQUEST_CODE = 100;
     private static final int MY_PERMISSION_REQUEST_STORAGE = 1;
@@ -28,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        instance = this;
         setContentView(R.layout.activity_main);
 
         EventsInitializer.getInstance().initializeEvents(this);

@@ -40,12 +40,10 @@ public class Detector extends Thread {
     private static final int FONT_THICKNESS = 2;
 
     private static final float THRESHOLD = 0.5f;
-    private static final float MIN_PROBABILITY = 0.3f; //prob of being a box
+    private static final float MIN_PROBABILITY = 0.3f;
 
     private static List<String> labels = null;
     private static List<Scalar> labelsColor = null;
-
-    private static final Scalar scalar = new Scalar(255, 255, 255);
 
     private static final DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
@@ -90,25 +88,30 @@ public class Detector extends Thread {
 
         List<Rect2d> boundingBoxesList = new ArrayList<>();
         List<Float> confidencesList = new ArrayList<>();
+        List<Integer> classIndexesList = new ArrayList<>();
 
         MatOfRect2d boundingBoxes = new MatOfRect2d();
         MatOfFloat confidences = new MatOfFloat();
-
-        List<Integer> classIndexes = new ArrayList<>();
 
         int numberOfLabels = labels.size();
 
         for (int i = 0; i < amountOfOutputLayers; i++){
             for (int j = 0; j < outputFromNetwork.get(i).size().height; j++) {
-                float[] scores = new float[numberOfLabels];
-                for (int c = 0; c < numberOfLabels; c++)
-                    scores[c] = (float) outputFromNetwork.get(i).get(j, c + 5)[0];
 
-                int indexOfMaxValue = 0;
-                for (int c = 0; c < numberOfLabels; c++)
-                    indexOfMaxValue = (scores[c] > scores[indexOfMaxValue]) ? c : indexOfMaxValue;
+                int indexOfMaxValue = -1;
+                double maxScore = -1;
+                for (int c = 0; c < numberOfLabels; c++) {
+                    double temp = outputFromNetwork.get(i).get(j, c + 5)[0];
+                    Log.d("MainActivity", "Class: " + labels.get(c) + " Probabilidade: " + temp);
 
-                Float maxProbability = scores[indexOfMaxValue];
+                    if (maxScore >= temp)
+                        continue;
+
+                    maxScore = temp;
+                    indexOfMaxValue = c;
+                }
+
+                float maxProbability = (float) maxScore;
                 if (maxProbability <= MIN_PROBABILITY)
                     continue;
 
@@ -123,7 +126,7 @@ public class Detector extends Thread {
 
                 boundingBoxesList.add(boxRect2d);
                 confidencesList.add(maxProbability);
-                classIndexes.add(indexOfMaxValue);
+                classIndexesList.add(indexOfMaxValue);
             }
         }
 
@@ -136,7 +139,7 @@ public class Detector extends Thread {
         if (indices.size().height > 0) {
             List<Integer> indicesList = indices.toList();
             for (int i = 0; i < indicesList.size(); i++) {
-                int classIndex = classIndexes.get(indicesList.get(i));
+                int classIndex = classIndexesList.get(indicesList.get(i));
                 double x = boundingBoxesList.get(indicesList.get(i)).x;
                 double y = boundingBoxesList.get(indicesList.get(i)).y;
                 double width = boundingBoxesList.get(indicesList.get(i)).width;
