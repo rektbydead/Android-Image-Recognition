@@ -8,7 +8,6 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
-import haw.hamburg.eml.MainActivity;
 import haw.hamburg.eml.utils.EventsInitializer;
 import haw.hamburg.eml.yolo.Detector;
 
@@ -51,7 +50,7 @@ public class Camera implements CameraBridgeViewBase.CvCameraViewListener2 {
         Core.transpose(mRGBA, mRGBA);
         Core.flip(mRGBA, mRGBA, 1);
 
-        if (!EventsInitializer.getInstance().getStart())
+        if (!EventsInitializer.getInstance().getDetect())
             return mRGBA;
 
         return Detector.detectImage(mRGBA);

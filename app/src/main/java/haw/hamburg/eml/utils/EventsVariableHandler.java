@@ -1,9 +1,9 @@
 package haw.hamburg.eml.utils;
 
 public class EventsVariableHandler {
-    protected boolean start = false;
+    protected boolean detect = false;
 
-    public boolean getStart() {
-        return start;
+    public boolean getDetect() {
+        return detect;
     }
 }

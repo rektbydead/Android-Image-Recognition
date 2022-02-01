@@ -133,8 +133,6 @@ public class Detector extends Thread {
         MatOfInt indices = new MatOfInt();
         Dnn.NMSBoxes(boundingBoxes, confidences, MIN_PROBABILITY, THRESHOLD, indices);
 
-        Imgproc.resize(newFrame, newFrame, new Size(frame.width(), frame.height()));
-
         if (indices.size().height > 0) {
             List<Integer> indicesList = indices.toList();
             for (int i = 0; i < indicesList.size(); i++) {
@@ -147,17 +145,16 @@ public class Detector extends Thread {
                 Point vertex = new Point(x, y);
                 Point oppositeVertex = new Point(x + width, y + height);
 
-                Imgproc.rectangle(newFrame, vertex, oppositeVertex, labelsColor.get(classIndex));
-
-                String text = labels.get(classIndex) + " : [" + decimalFormat.format(confidencesList.get(i)) + "]";
+                Imgproc.rectangle(frame, vertex, oppositeVertex, labelsColor.get(classIndex));
 
                 Point textPoint = new Point(x, y - 10);
-                Imgproc.putText(newFrame, text, textPoint,  FONT_FACE, FONT_SCALE, labelsColor.get(classIndex), FONT_THICKNESS);
+                String text = labels.get(classIndex) + " : [" + decimalFormat.format(confidencesList.get(i)) + "]";
+                Imgproc.putText(frame, text, textPoint,  FONT_FACE, FONT_SCALE, labelsColor.get(classIndex), FONT_THICKNESS);
             }
         }
 
         long end = System.currentTimeMillis();
         Log.d("MainActivity", "Took: " + (end - start) + "ms");
-        return newFrame;
+        return frame;
     }
 }

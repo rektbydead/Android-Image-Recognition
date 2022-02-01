@@ -13,7 +13,7 @@ public class EventsInitializer extends EventsVariableHandler {
     public static EventsInitializer getInstance() {
         if (instance == null)
             instance = new EventsInitializer();
-    
+
         return instance;
     }
 
@@ -23,8 +23,8 @@ public class EventsInitializer extends EventsVariableHandler {
 
     private void buttonStartEvent(Button button) {
         button.setOnClickListener((view) -> {
-            this.start = !this.start;
-            button.setText(this.start ? "Stop" : "Start");
+            this.detect = !this.detect;
+            button.setText(this.detect ? "Stop" : "Start");
         });
     }
 }
