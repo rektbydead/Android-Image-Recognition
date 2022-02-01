@@ -13,6 +13,7 @@ import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.OpenCVLoader;
 
 import haw.hamburg.eml.camera.CameraInitializer;
+import haw.hamburg.eml.utils.EventsInitializer;
 import haw.hamburg.eml.yolo.DetectorInitializer;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        activateEvents();
+        EventsInitializer.getInstance().initializeEvents(this);
 
         OpenCVLoader.initDebug();
 
@@ -61,15 +62,5 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
         }
-    }
-
-    public static boolean start = false;
-
-    public void activateEvents() {
-        Button button = findViewById(R.id.button);
-        button.setOnClickListener((view) -> {
-            start = !start;
-            button.setText(start ? "Stop" : "Start");
-        });
     }
 }
