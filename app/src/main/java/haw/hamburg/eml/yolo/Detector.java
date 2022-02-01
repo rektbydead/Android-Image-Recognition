@@ -102,7 +102,7 @@ public class Detector extends Thread {
                 double maxScore = -1;
                 for (int c = 0; c < numberOfLabels; c++) {
                     double temp = outputFromNetwork.get(i).get(j, c + 5)[0];
-                    Log.d("MainActivity", "Class: " + labels.get(c) + " Probabilidade: " + temp);
+                    //Log.d("MainActivity", "Class: " + labels.get(c) + " Probabilidade: " + temp);
 
                     if (maxScore >= temp)
                         continue;
@@ -156,8 +156,11 @@ public class Detector extends Thread {
             }
         }
 
-        long end = System.currentTimeMillis();
-        Log.d("MainActivity", "Took: " + (end - start) + "ms");
+        long fps = (System.currentTimeMillis() - start);
+        Log.d("MainActivity", "Took: " + fps + "ms");
+
+        Point fpsPoint = new Point(50, 50);
+        Imgproc.putText(frame, "Took " + fps + "ms", fpsPoint,  FONT_FACE, FONT_SCALE, new Scalar(255, 255, 255), FONT_THICKNESS);
         return frame;
     }
 }
