@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Random;
 
 import haw.hamburg.eml.MainActivity;
+import haw.hamburg.eml.R;
+import haw.hamburg.eml.utils.EventsInitializer;
 import haw.hamburg.eml.utils.FileHandler;
 
 public class Detector extends Thread {
@@ -32,7 +34,7 @@ public class Detector extends Thread {
     private static final String CFG_PATH = INITIAL_PATH + "yolov4-obj.cfg";
     private static final String WEIGHT_PATH = INITIAL_PATH + "yolov4-obj_best.weights";
 
-    private static final int IMAGE_SIZE = 416;
+   // private static final int IMAGE_SIZE = 416;
     private static final float SCALAR_FACTOR = 1/255.0f;
 
     private static final int FONT_FACE = 0; // FONT_HERSHEY_SIMPLEX (normal size sans-serif font)
@@ -51,7 +53,7 @@ public class Detector extends Thread {
     private static Net network = null;
     private static List<Integer> outputLayersIndexes= null;
 
-    private final MainActivity instance;
+    private static MainActivity instance;
 
     public Detector(MainActivity instance) {
         this.instance = instance;
@@ -76,8 +78,9 @@ public class Detector extends Thread {
 
     public static Mat detectImage(Mat frame) {
         long start = System.currentTimeMillis();
+        int imageSize = EventsInitializer.getInstance().getImageSize();;
         Mat newFrame = new Mat();
-        Imgproc.resize(frame, newFrame, new Size(IMAGE_SIZE, IMAGE_SIZE));
+        Imgproc.resize(frame, newFrame, new Size(imageSize, imageSize));
         Mat blob = Dnn.blobFromImage(newFrame, SCALAR_FACTOR);
         network.setInput(blob);
 
@@ -102,7 +105,6 @@ public class Detector extends Thread {
                 double maxScore = -1;
                 for (int c = 0; c < numberOfLabels; c++) {
                     double temp = outputFromNetwork.get(i).get(j, c + 5)[0];
-                    //Log.d("MainActivity", "Class: " + labels.get(c) + " Probabilidade: " + temp);
 
                     if (maxScore >= temp)
                         continue;

@@ -13,8 +13,7 @@
     <org.opencv.android.JavaCameraView
         android:id="@+id/my_camera_view"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        />
+        android:layout_height="500dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -25,9 +24,29 @@
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Start"/>
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp"
+            android:text="Start" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/seekBar"
+            android:layout_width="219dp"
+            android:layout_height="49dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="41dp"
+            android:layout_marginTop="33dp"
+            android:layout_toEndOf="@+id/button"
+            android:valueFrom="64"
+            android:value="416"
+            android:stepSize="32"
+            android:valueTo="1024"/>
     </RelativeLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:orientation="horizontal" />
 
 
 </RelativeLayout>

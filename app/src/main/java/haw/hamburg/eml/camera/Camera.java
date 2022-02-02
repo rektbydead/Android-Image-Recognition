@@ -54,7 +54,6 @@ public class Camera implements CameraBridgeViewBase.CvCameraViewListener2 {
         Core.transpose(mRGBA, mRGBA);
         Core.flip(mRGBA, mRGBA, 1);
 
-        //Log.d("MainActivity", "Width: " + mRGBA.width() + " Height: " + mRGBA.height());
 
         if (!EventsInitializer.getInstance().getDetect())
             return mRGBA;
