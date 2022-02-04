@@ -86,8 +86,7 @@ public class Detector extends Thread {
 
         int amountOfOutputLayers = outputLayersIndexes.size();
         List<Mat> outputFromNetwork = new ArrayList<>();
-        for (int i = 0; i < amountOfOutputLayers; i++)
-            outputFromNetwork.add(network.forward(outputLayersNames.get(i)));
+        network.forward(outputFromNetwork, outputLayersNames);
 
         List<Rect2d> boundingBoxesList = new ArrayList<>();
         List<Float> confidencesList = new ArrayList<>();
@@ -135,6 +134,7 @@ public class Detector extends Thread {
         boundingBoxes.fromList(boundingBoxesList);
         confidences.fromList(confidencesList);
 
+        // Apply non-maximum suppression procedure
         MatOfInt indices = new MatOfInt();
         Dnn.NMSBoxes(boundingBoxes, confidences, MIN_PROBABILITY, THRESHOLD, indices);
 
